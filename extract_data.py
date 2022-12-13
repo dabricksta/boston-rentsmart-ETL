@@ -1,13 +1,16 @@
 import json
 import requests
-from datetime import date
+from datetime import date, timedelta
 
-data_url = 'https://data.boston.gov/api/3/action/datastore_search?resource_id=ecb8e8a6-b5cf-41ea-8cbe-73fd53e03219&limit=5&q=title:jones'  
+yesterday = date.today() - timedelta(days = 1)
+extracted_data_fn = f'rentsmart_json_{yesterday}.json'
+data_url = f'https://data.boston.gov/api/3/action/datastore_search_sql?sql=SELECT%20*%20from%20%22dc615ff7-2ff3-416a-922b-f0f334f085d0%22%20where%20date%20%3E=%20%27{yesterday}%27' 
 
-def json_scraper(url, file_name, bucket):
+def call_boston_gov_api (url, file_name, bucket):
     print('begin execution')
     response = requests.request('GET', url)
     json_data = response.json()
+    print(json_data)
 
     with open(file_name, 'w', encoding = 'utf-8') as json_file:
         json.dump(json_data, fp = json_file, ensure_ascii = False, indent = 4)
@@ -16,10 +19,5 @@ def json_scraper(url, file_name, bucket):
     # s3 = boto3.client('s3')
     # s3.upload_file(file_name, bucket, f"boston-rent-smart-data-ddbr/{file_name}")
 
-json_scraper(data_url, f'rentsmart_json_{date.today()}.json', 'boston-rent-smart-data-ddbr')
-import json
-import urllib.request
-url = 'https://data.boston.gov/api/3/action/datastore_search?resource_id=dc615ff7-2ff3-416a-922b-f0f334f085d0&limit=5&q=title:jones'  
-fileobj = urllib.request.urlopen(url)
-response_dict = json.loads(fileobj.read())
-print(response_dict)
+# call_boston_gov_api(data_url, extracted_data_fn, 'boston-rent-smart-data-ddbr')
+
