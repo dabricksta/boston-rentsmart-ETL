@@ -6,32 +6,31 @@ import csv
 import os
 import extract_data
 
-# yesterday = date.today() - timedelta(days = 1)
-# extracted_data_fn = f'rentsmart_json_{yesterday}.json'
+df = pd.DataFrame()
 
-# with open(extracted_data_fn) as json_file:
-with open('rentsmart_json_2022-11-23.json') as json_file:
+# json_file = open(extract_data.extracted_data_fn, "r")
+with open(extract_data.extracted_data_fn) as json_file:
     # store file data in object
     json_data = json.load(json_file)
-    print (json_data)
+    # print (json_data)
     df = pd.json_normalize(json_data['result']['records'])
-    print (df)
+    print (df.head(5))
 
-
-def clean_data(dataframe):
+def clean_data(dataframe = df):
     #rename columns
     dataframe = dataframe.rename(columns = {'_id':'id', 'date':'datetime', 'year built':'year_built'
         , 'year remodeled':'year_remodeled'})
     #clean zip codes
     dataframe['zip_code'] = dataframe['zip_code'].apply(lambda x: '0' + str(x) if len(x) == 4 else str(x))
     #create date column from preexisting datetime
-    dataframe['date'] = dataframe['datetime'].apply(lambda x: datetime.datetime.strptime(x, '%Y-%m-%dT%H:%M:%S'))
-    dataframe['date'] = dataframe['date'].apply(lambda x: datetime.datetime.date(x))
+    dataframe['date'] = dataframe['datetime'].apply(lambda x: datetime.strptime(x, '%Y-%m-%dT%H:%M:%S'))
+    dataframe['date'] = dataframe['date'].apply(lambda x: datetime.date(x))
     dataframe['geo_coordinates'] = dataframe['latitude'] + ', ' + dataframe['longitude']
     #reorder
     dataframe = dataframe[['id', 'date', 'datetime', 'property_type', 'violation_type', 'description', 'owner', 'year_built'
         , 'year_remodeled', 'neighborhood', 'address', 'zip_code', 'parcel', 'geo_coordinates', 'latitude', 'longitude']]
     # dataframe
+    print(dataframe.head(5))
     return(dataframe)
 
 

@@ -6,11 +6,12 @@ yesterday = date.today() - timedelta(days = 1)
 extracted_data_fn = f'rentsmart_json_{yesterday}.json'
 data_url = f'https://data.boston.gov/api/3/action/datastore_search_sql?sql=SELECT%20*%20from%20%22dc615ff7-2ff3-416a-922b-f0f334f085d0%22%20where%20date%20%3E=%20%27{yesterday}%27' 
 
-def call_boston_gov_api (url, file_name, bucket):
+def call_boston_gov_api (bucket, url = data_url, file_name = extracted_data_fn):
     print('begin execution')
     response = requests.request('GET', url)
     json_data = response.json()
-    print(json_data)
+    # print the first 5 items in the json response dict
+    print(list(json_data.items())[:5])
 
     with open(file_name, 'w', encoding = 'utf-8') as json_file:
         json.dump(json_data, fp = json_file, ensure_ascii = False, indent = 4)

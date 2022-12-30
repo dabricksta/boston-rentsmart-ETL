@@ -1,8 +1,10 @@
+import extract_data
+import clean_data
+
 def main():
-    call_Boston_gov_API(data_url, extracted_data_fn, 'boston-rent-smart-data-ddbr')
-    clean_data(df)
+    extract_data.call_boston_gov_api('boston-rent-smart-data-ddbr')
+    clean_data.clean_data()
     
 
 if __name__ == '__main__':
     main()
-
