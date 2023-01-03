@@ -1,4 +1,11 @@
 # Ignored files
 *.json
 *.csv
-*.pynb
+*.ipynb
+*.svg
+*.drawio
+
+**/.terraform/*
+**.terraform*
+*.tfstate*
+provision_aws_resources_aws.py
