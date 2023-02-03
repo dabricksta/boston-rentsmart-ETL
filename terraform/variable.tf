@@ -7,7 +7,7 @@ variable "db_password" {
 variable "s3_bucket" {
   description = "Bucket name for S3"
   type        = string
-  default     = "boston-rentsmart-ETL"
+  default     = "boston-rentsmart-etl"
 }
 
 variable "aws_region" {

@@ -1,11 +1,13 @@
-# Ignored files
+# Ignore data files, working notebooks, and draw.io save
 *.json
 *.csv
 *.ipynb
 *.svg
 *.drawio
 
-**/.terraform/*
-**.terraform*
-*.tfstate*
+# Ignore terraform misc files
+**/.terraform/
+**.tfstate*
+
+# Others
 provision_aws_resources_aws.py

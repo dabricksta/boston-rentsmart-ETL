@@ -1,5 +1,3 @@
-boston-rentsmart-ETL
-
 Presents housing violation data from the City of Boston as a data engineering resume project
 
 Under construction.
